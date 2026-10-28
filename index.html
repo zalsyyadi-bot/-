@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>قطرة دم تنقذ حياة</title>
+  <style>
+    :root {
+      --red-900: #7f0d18;
+      --red-800: #9d1c2a;
+      --red-700: #c62828;
+      --red-600: #d32f2f;
+      --red-500: #ef5350;
+      --red-100: #ffe7e7;
+      --green-700: #2e7d32;
+      --green-100: #e8f5e9;
+      --bg: #f5f6f8;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --shadow: 0 12px 30px rgba(31, 41, 55, 0.12);
+      --radius: 18px;
+      --danger: #b91c1c;
+      --warning: #d97706;
+      --info: #2563eb;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(180deg, #fff5f5 0%, var(--bg) 100%);
+      color: var(--text);
+      direction: rtl;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px;
+    }
+
+    .app {
+      width: min(100%, 500px);
+      min-height: 96vh;
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--red-700), var(--red-900));
+      color: white;
+      padding: 22px 18px 18px;
+      text-align: center;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo {
+      width: 62px; height: 62px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.12);
+      font-size: 2.1rem;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .header p {
+      margin: 6px 0 0;
+      font-size: 0.82rem;
+      opacity: 0.85;
+    }
+
+    .content {
+      padding: 18px 18px 26px;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .screen.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.03);
+    }
+
+    .title {
+      margin: 0 0 14px;
+      font-size: 1.15rem;
+      text-align: center;
+      color: var(--text);
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 0.88rem;
+      text-align: center;
+      margin: 8px 0 16px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    input, select, textarea, button {
+      font: inherit;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.96rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--red-500);
+      box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--red-600), var(--red-800));
+      color: white;
+      padding: 13px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.2s ease;
+      box-shadow: 0 10px 20px rgba(211, 47, 47, 0.2);
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn.secondary {
+      background: linear-gradient(135deg, var(--green-700), #1b5e20);
+      box-shadow: none;
+    }
+
+    .btn.ghost {
+      background: #fff;
+      color: var(--red-700);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .btn.full { width: 100%; }
+    .btn.small { width: auto; min-width: 120px; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .switcher {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .switcher button {
+      flex: 1;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 10px;
+      color: var(--muted);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .switcher button.active {
+      background: var(--red-100);
+      color: var(--red-700);
+      border-color: var(--red-200);
+    }
+
+    .blood-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .blood-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--red-800);
+      border-radius: 12px;
+      padding: 12px 8px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .blood-btn.selected {
+      background: var(--red-100);
+      border-color: var(--red-300);
+      color: var(--red-800);
+      box-shadow: inset 0 0 0 1px rgba(157,28,42,0.1);
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      background: transparent;
+      border: none;
+      color: var(--red-700);
+      font-weight: 700;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .menu-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff 0%, #fffaf8 100%);
+      border-radius: 18px;
+      padding: 18px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0,0,0,.04);
+    }
+
+    .menu-card .icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .menu-card h3 {
+      margin: 0;
+      font-size: 0.93rem;
+      line-height: 1.7;
+    }
+
+    .profile-box {
+      background: linear-gradient(135deg, #fff7f7, #fff);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 15px;
+    }
+
+    .profile-box .name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .profile-box .meta {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.15rem;
+      color: var(--red-700);
+      margin-bottom: 6px;
+    }
+
+    .stat-card span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .list {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .donor-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 12px;
+    }
+
+    .donor-card .left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .donor-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--red-100);
+      display: grid;
+      place-items: center;
+      color: var(--red-700);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .donor-name {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .donor-meta {
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+
+    .blood-tag {
+      min-width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      text-align: center;
+      display: grid;
+      place-items: center;
+      background: var(--red-100);
+      color: var(--red-700);
+      font-weight: 900;
+      font-size: 1.05rem;
+      border: 1px solid rgba(157,28,42,0.1);
+    }
+
+    .contact-link {
+      color: var(--green-700);
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 26px 12px;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      background: #fcfcfc;
+    }
+
+    .alert {
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      display: none;
+      line-height: 1.6;
+      border: 1px solid transparent;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert.success {
+      background: var(--green-100);
+      border-color: #bbf7d0;
+      color: #166534;
+    }
+
+    .alert.error {
+      background: #fff1f2;
+      border-color: #fecdd3;
+      color: var(--danger);
+    }
+
+    .alert.info {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: var(--info);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(16px);
+      background: rgba(17, 24, 39, 0.92);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 1000;
+      box-shadow: 0 12px 20px rgba(0,0,0,0.18);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .tiny {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 420px) {
+      .blood-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <div class="logo">🩸</div>
+        <h1>قطرة دم تنقذ حياة</h1>
+        <p>منصة خيرية للتبرع بالدم</p>
+      </div>
+    </header>
+
+    <div class="content">
+      <div id="alert" class="alert" role="alert"></div>
+
+      <section id="auth-screen" class="screen active">
+        <div class="panel">
+          <h2 class="title">مرحبًا بك</h2>
+          <p class="subtle">سجل الدخول أو أنشئ حسابًا جديدًا للمشاركة في التبرع</p>
+
+          <div class="switcher">
+            <button class="active" type="button" data-auth-mode="login">تسجيل الدخول</button>
+            <button type="button" data-auth-mode="register">إنشاء حساب</button>
+          </div>
+
+          <div id="login-form-wrap">
+            <form id="login-form">
+              <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="tel" id="login-phone" placeholder="05XXXXXXXX" required />
+              </div>
+
+              <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="login-password" placeholder="********" required />
+              </div>
+
+              <button class="btn full" type="submit">تسجيل الدخول</button>
+            </form>
+          </div>
+
+          <div id="register-form-wrap" style="display:none;">
+            <form id="register-form">
+              <div class="form-group">
+                <label>الاسم الكامل</label>
+                <input type="text" id="register-name" maxlength="80" placeholder="أدخل الاسم الكامل" required />
+              </div>
+
+              <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="tel" id="register-phone" maxlength="15" placeholder="05XXXXXXXX" required />
+              </div>
+
+              <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="register-password" minlength="6" maxlength="30" placeholder="أدخل كلمة مرور قوية" required />
+              </div>
+
+              <button class="btn full" type="submit">إنشاء الحساب</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="home-screen" class="screen">
+        <div class="profile-box">
+          <div class="name" id="welcome-name">أهلاً بك</div>
+          <div class="meta" id="welcome-meta">لوحة التحكم</div>
+        </div>
+
+        <div class="menu-grid">
+          <div class="menu-card" data-screen="donor-screen">
+            <div class="icon">🩺</div>
+            <h3>تسجيل<br>كمتبرع</h3>
+          </div>
+
+          <div class="menu-card" data-screen="search-screen">
+            <div class="icon">🔍</div>
+            <h3>البحث عن<br>فصيلة دم</h3>
+          </div>
+
+          <div class="menu-card" data-screen="urgent-screen">
+            <div class="icon">🚨</div>
+            <h3>طلب عاجل<br>للتبرع</h3>
+          </div>
+
+          <div class="menu-card" data-screen="account-screen">
+            <div class="icon">👤</div>
+            <h3>بيانات<br>حسابي</h3>
+          </div>
+
+          <div class="menu-card" data-screen="auth-screen">
+            <div class="icon">🚪</div>
+            <h3>تسجيل<br>الخروج</h3>
+          </div>
+        </div>
+      </section>
+
+      <section id="donor-screen" class="screen">
+        <button class="nav-back" type="button" data-back="home-screen">↩️ العودة للرئيسية</button>
+
+        <div class="panel">
+          <h2 class="title">تسجيل متبرع جديد</h2>
+
+          <form id="donor-form">
+            <div class="form-group">
+              <label>الاسم الكامل</label>
+              <input id="donor-name" type="text" placeholder="أدخل الاسم الكامل" required />
+            </div>
+
+            <div class="form-group">
+              <label>فصيلة الدم</label>
+              <div class="blood-grid" id="donor-blood-grid">
+                <button type="button" class="blood-btn" data-blood="A+">A+</button>
+                <button type="button" class="blood-btn" data-blood="A-">A-</button>
+                <button type="button" class="blood-btn" data-blood="B+">B+</button>
+                <button type="button" class="blood-btn" data-blood="B-">B-</button>
+                <button type="button" class="blood-btn" data-blood="AB+">AB+</button>
+                <button type="button" class="blood-btn" data-blood="AB-">AB-</button>
+                <button type="button" class="blood-btn" data-blood="O+">O+</button>
+                <button type="button" class="blood-btn" data-blood="O-">O-</button>
+              </div>
+              <input type="hidden" id="donor-bloodtype" />
+            </div>
+
+            <div class="form-group">
+              <label>رقم الهاتف</label>
+              <input id="donor-phone" type="tel" placeholder="05XXXXXXXX" required />
+            </div>
+
+            <div class="row">
+              <div class="form-group">
+                <label>المحافظة</label>
+                <input id="donor-city" type="text" placeholder="مثل: الرياض" required />
+              </div>
+              <div class="form-group">
+                <label>المديرية / المنطقة</label>
+                <input id="donor-district" type="text" placeholder="مثل: النخيل" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>العنوان التفصيلي</label>
+              <input id="donor-address" type="text" placeholder="الحي / الشارع / القرية" required />
+            </div>
+
+            <button class="btn full" type="submit">حفظ بيانات المتبرع</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="search-screen" class="screen">
+        <button class="nav-back" type="button" data-back="home-screen">↩️ العودة للرئيسية</button>
+
+        <div class="panel">
+          <h2 class="title">البحث عن متبرع</h2>
+
+          <div class="form-group">
+            <label>اختر فصيلة الدم المطلوبة</label>
+            <div class="blood-grid" id="search-blood-grid">
+              <button type="button" class="blood-btn" data-search="A+">A+</button>
+              <button type="button" class="blood-btn" data-search="A-">A-</button>
+              <button type="button" class="blood-btn" data-search="B+">B+</button>
+              <button type="button" class="blood-btn" data-search="B-">B-</button>
+              <button type="button" class="blood-btn" data-search="AB+">AB+</button>
+              <button type="button" class="blood-btn" data-search="AB-">AB-</button>
+              <button type="button" class="blood-btn" data-search="O+">O+</button>
+              <button type="button" class="blood-btn" data-search="O-">O-</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="subtle" id="search-summary">اختر فصيلة للبحث</div>
+            <div id="search-results" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="urgent-screen" class="screen">
+        <button class="nav-back" type="button" data-back="home-screen">↩️ العودة للرئيسية</button>
+
+        <div class="panel">
+          <h2 class="title">طلب عاجل للتبرع</h2>
+
+          <form id="urgent-form">
+            <div class="form-group">
+              <label>فصيلة الدم المطلوبة</label>
+              <select id="urgent-blood" required>
+                <option value="">اختر الفصيلة</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+                <option>O+</option>
+                <option>O-</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <div class="form-group">
+                <label>المحافظة</label>
+                <input id="urgent-city" type="text" placeholder="مثال: الرياض" required />
+              </div>
+              <div class="form-group">
+                <label>المديرية</label>
+                <input id="urgent-district" type="text" placeholder="مثال: الخرج" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>المستشفى أو الموقع</label>
+              <input id="urgent-location" type="text" placeholder="اسم المستشفى أو الموقع" required />
+            </div>
+
+            <div class="form-group">
+              <label>رقم التواصل</label>
+              <input id="urgent-phone" type="tel" placeholder="05XXXXXXXX" required />
+            </div>
+
+            <div class="form-group">
+              <label>وصف مختصر للحالة</label>
+              <textarea id="urgent-desc" placeholder="اكتب وصفًا مختصرًا للحالة..." required></textarea>
+            </div>
+
+            <button class="btn full" type="submit">إرسال الطلب العاجل</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="account-screen" class="screen">
+        <button class="nav-back" type="button" data-back="home-screen">↩️ العودة للرئيسية</button>
+
+        <div class="panel">
+          <h2 class="title">بيانات حسابي</h2>
+
+          <div class="profile-box">
+            <div class="name" id="account-name">-</div>
+            <div class="meta" id="account-phone">-</div>
+          </div>
+
+          <div class="stats">
+            <div class="stat-card">
+              <strong id="count-donors">0</strong>
+              <span>متبرعين</span>
+            </div>
+            <div class="stat-card">
+              <strong id="count-requests">0</strong>
+              <span>طلبات عاجلة</span>
+            </div>
+            <div class="stat-card">
+              <strong id="count-blood">-</strong>
+              <span>فصيلي</span>
+            </div>
+          </div>
+
+          <div id="account-donors" class="list"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script>
+    const STORAGE = {
+      users: 'qatratdam_users',
+      donors: 'qatratdam_donors',
+      urgent: 'qatratdam_urgent',
+      session: 'qatratdam_session'
+    };
+
+    const APP_CONFIG = {
+      appsScriptUrl: '',
+      enableRemoteSync: false
+    };
+
+    const screens = {
+      auth: document.getElementById('auth-screen'),
+      home: document.getElementById('home-screen'),
+      donor: document.getElementById('donor-screen'),
+      search: document.getElementById('search-screen'),
+      urgent: document.getElementById('urgent-screen'),
+      account: document.getElementById('account-screen')
+    };
+
+    const states = {
+      authMode: 'login',
+      currentUser: null,
+      selectedBlood: '',
+      selectedSearchBlood: ''
+    };
+
+    function showScreen(name) {
+      Object.entries(screens).forEach(([key, el]) => {
+        el.classList.toggle('active', key === name);
+      });
+    }
+
+    function toast(message) {
+      const t = document.getElementById('toast');
+      t.textContent = message;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    function alertBox(message, type = 'info') {
+      const el = document.getElementById('alert');
+      el.textContent = message;
+      el.className = `alert show ${type}`;
+    }
+
+    function hideAlert() {
+      document.getElementById('alert').classList.remove('show');
+    }
+
+    function getStorageData(key, fallback = []) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function setStorageData(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function uid(prefix = 'id') {
+      return `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
+    }
+
+    async function hashPassword(password) {
+      const enc = new TextEncoder();
+      const digest = await crypto.subtle.digest('SHA-256', enc.encode(password));
+      return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function normalizePhone(phone) {
+      return String(phone || '').replace(/[^0-9+]/g, '').trim();
+    }
+
+    function getCurrentUser() {
+      const session = getStorageData(STORAGE.session, null);
+      if (!session) return null;
+      const users = getStorageData(STORAGE.users, []);
+      return users.find(u => u.id === session.userId) || null;
+    }
+
+    function saveCurrentUser(user) {
+      setStorageData(STORAGE.session, { userId: user.id });
+      states.currentUser = user;
+    }
+
+    function clearSession() {
+      localStorage.removeItem(STORAGE.session);
+      states.currentUser = null;
+    }
+
+    function updateAuthSwitch() {
+      const loginWrap = document.getElementById('login-form-wrap');
+      const registerWrap = document.getElementById('register-form-wrap');
+      const buttons = document.querySelectorAll('[data-auth-mode]');
+      buttons.forEach(btn => {
+        const active = btn.dataset.authMode === states.authMode;
+        btn.classList.toggle('active', active);
+      });
+      loginWrap.style.display = states.authMode === 'login' ? 'block' : 'none';
+      registerWrap.style.display = states.authMode === 'register' ? 'block' : 'none';
+    }
+
+    function renderWelcome() {
+      const user = getCurrentUser();
+      if (!user) return;
+      document.getElementById('welcome-name').textContent = `أهلاً، ${user.name}`;
+      document.getElementById('welcome-meta').textContent = `رقم الهاتف: ${user.phone}`;
+      document.getElementById('account-name').textContent = user.name;
+      document.getElementById('account-phone').textContent = user.phone;
+    }
+
+    function renderAccountStats() {
+      const donors = getStorageData(STORAGE.donors, []);
+      const requests = getStorageData(STORAGE.urgent, []);
+      const myDonor = donors.find(d => d.phone === states.currentUser?.phone);
+      const countDonors = donors.length;
+      const countRequests = requests.length;
+      document.getElementById('count-donors').textContent = countDonors;
+      document.getElementById('count-requests').textContent = countRequests;
+      document.getElementById('count-blood').textContent = myDonor ? myDonor.bloodType : '—';
+
+      const accountList = document.getElementById('account-donors');
+      if (!myDonor) {
+        accountList.innerHTML = '<div class=\"empty\">لم يتم تسجيلك كمتبرع بعد.</div>';
+        return;
+      }
+
+      const card = `
+        <div class="donor-card">
+          <div class="left">
+            <div class="donor-avatar">${myDonor.name.charAt(0)}</div>
+            <div>
+              <div class="donor-name">${myDonor.name}</div>
+              <div class="donor-meta">
+                ${myDonor.bloodType} • ${myDonor.city} • ${myDonor.district}<br />
+                ${myDonor.address}
+              </div>
+            </div>
+          </div>
+          <div class="blood-tag">${myDonor.bloodType}</div>
+        </div>
+      `;
+      accountList.innerHTML = card;
+    }
+
+    function renderSearchResults(bloodType) {
+      const donors = getStorageData(STORAGE.donors, []);
+      const filtered = donors.filter(d => d.bloodType === bloodType);
+      const resultBox = document.getElementById('search-results');
+      const summary = document.getElementById('search-summary');
+
+      if (!bloodType) {
+        summary.textContent = 'اختر فصيلة للبحث';
+        resultBox.innerHTML = '';
+        return;
+      }
+
+      summary.textContent = `المتبرعون المتاحون لفصيلة ${bloodType}: ${filtered.length}`;
+
+      if (!filtered.length) {
+        resultBox.innerHTML = `<div class=\"empty\">لا يوجد متبرعون مسجلون لفصيلة ${bloodType} في الوقت الحالي.</div>`;
+        return;
+      }
+
+      resultBox.innerHTML = filtered.map(d => `
+        <div class="donor-card">
+          <div class="left">
+            <div class="donor-avatar">${d.name.charAt(0)}</div>
+            <div>
+              <div class="donor-name">${d.name}</div>
+              <div class="donor-meta">
+                ${d.city} • ${d.district}<br />
+                ${d.address}
+              </div>
+              <a class="contact-link" href="tel:${d.phone}">اتصال مباشر</a>
+            </div>
+          </div>
+          <div class="blood-tag">${d.bloodType}</div>
+        </div>
+      `).join('');
+    }
+
+    function setBloodSelection(containerId, selectedBlood) {
+      const buttons = document.querySelectorAll(`#${containerId} .blood-btn`);
+      buttons.forEach(btn => btn.classList.toggle('selected', btn.dataset.blood === selectedBlood || btn.dataset.search === selectedBlood));
+    }
+
+    function validateEmailNotNeeded() {
+      return true;
+    }
+
+    async function handleRegister(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('register-name').value.trim();
+      const phone = normalizePhone(document.getElementById('register-phone').value);
+      const password = document.getElementById('register-password').value;
+
+      if (!name || !phone || !password) {
+        alertBox('يرجى تعبئة جميع الحقول قبل إنشاء الحساب.', 'error');
+        return;
+      }
+
+      if (phone.length < 8) {
+        alertBox('رقم الهاتف غير صحيح، يرجى إدخاله بشكل صحيح.', 'error');
+        return;
+      }
+
+      if (password.length < 6) {
+        alertBox('كلمة المرور يجب أن تكون 6 أحرف على الأقل.', 'error');
+        return;
+      }
+
+      const users = getStorageData(STORAGE.users, []);
+      if (users.some(u => normalizePhone(u.phone) === phone)) {
+        alertBox('هذا الرقم مسجل مسبقًا، حاول تسجيل الدخول بدلًا من إنشاء حساب جديد.', 'error');
+        return;
+      }
+
+      const hashed = await hashPassword(password);
+
+      const newUser = {
+        id: uid('user'),
+        name,
+        phone,
+        passwordHash: hashed,
+        createdAt: new Date().toISOString()
+      };
+
+      users.push(newUser);
+      setStorageData(STORAGE.users, users);
+
+      saveCurrentUser(newUser);
+      renderWelcome();
+      hideAlert();
+      toast('تم إنشاء الحساب بنجاح');
+      showScreen('home');
+      document.getElementById('register-form').reset();
+    }
+
+    async function handleLogin(event) {
+      event.preventDefault();
+
+      const phone = normalizePhone(document.getElementById('login-phone').value);
+      const password = document.getElementById('login-password').value;
+
+      if (!phone || !password) {
+        alertBox('يرجى إدخال رقم الهاتف وكلمة المرور.', 'error');
+        return;
+      }
+
+      const users = getStorageData(STORAGE.users, []);
+      const user = users.find(u => normalizePhone(u.phone) === phone);
+
+      if (!user) {
+        alertBox('لا يوجد حساب بهذا الرقم، يمكنك إنشاء حساب جديد.', 'error');
+        return;
+      }
+
+      const hash = await hashPassword(password);
+      if (user.passwordHash !== hash) {
+        alertBox('كلمة المرور غير صحيحة.', 'error');
+        return;
+      }
+
+      saveCurrentUser(user);
+      renderWelcome();
+      hideAlert();
+      toast('تم تسجيل الدخول بنجاح');
+      showScreen('home');
+      document.getElementById('login-form').reset();
+    }
+
+    function handleLogout() {
+      clearSession();
+      showScreen('auth');
+      states.authMode = 'login';
+      updateAuthSwitch();
+      toast('تم تسجيل الخروج بنجاح');
+      hideAlert();
+    }
+
+    function ensureSession() {
+      const user = getCurrentUser();
+      if (user) {
+        states.currentUser = user;
+        renderWelcome();
+        renderAccountStats();
+        showScreen('home');
+      } else {
+        showScreen('auth');
+      }
+    }
+
+    function handleDonorSubmit(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('donor-name').value.trim();
+      const bloodType = document.getElementById('donor-bloodtype').value;
+      const phone = normalizePhone(document.getElementById('donor-phone').value);
+      const city = document.getElementById('donor-city').value.trim();
+      const district = document.getElementById('donor-district').value.trim();
+      const address = document.getElementById('donor-address').value.trim();
+
+      if (!name || !bloodType || !phone || !city || !district || !address) {
+        alertBox('يرجى تعبئة جميع الحقول.', 'error');
+        return;
+      }
+
+      const donors = getStorageData(STORAGE.donors, []);
+
+      const existing = donors.some(d => normalizePhone(d.phone) === phone);
+      const newDonor = {
+        donorId: uid('donor'),
+        name,
+        bloodType,
+        phone,
+        city,
+        district,
+        address,
+        createdAt: new Date().toISOString()
+      };
+
+      if (existing) {
+        const index = donors.findIndex(d => normalizePhone(d.phone) === phone);
+        donors[index] = { ...donors[index], ...newDonor };
+      } else {
+        donors.push(newDonor);
+      }
+
+      setStorageData(STORAGE.donors, donors);
+
+      tryRemoteSync('registerDonor', {
+        name,
+        bloodType,
+        phone,
+        city,
+        district,
+        address
+      }, () => {
+        toast('تم حفظ بيانات المتبرع بنجاح');
+      }, () => {
+        toast('تم حفظ البيانات محليًا، لكن لم يتم التواصل مع الخادم');
+      });
+
+      document.getElementById('donor-form').reset();
+      document.getElementById('donor-bloodtype').value = '';
+      document.querySelectorAll('#donor-blood-grid .blood-btn').forEach(btn => btn.classList.remove('selected'));
+      renderAccountStats();
+      hideAlert();
+      showScreen('home');
+    }
+
+    function renderUrgentRequests() {
+      const requests = getStorageData(STORAGE.urgent, []);
+      const list = document.getElementById('search-results');
+      // search screen is separate, but keep default
+      return requests;
+    }
+
+    function handleUrgentSubmit(event) {
+      event.preventDefault();
+
+      const bloodType = document.getElementById('urgent-blood').value;
+      const city = document.getElementById('urgent-city').value.trim();
+      const district = document.getElementById('urgent-district').value.trim();
+      const location = document.getElementById('urgent-location').value.trim();
+      const phone = normalizePhone(document.getElementById('urgent-phone').value);
+      const description = document.getElementById('urgent-desc').value.trim();
+
+      if (!bloodType || !city || !district || !location || !phone || !description) {
+        alertBox('يرجى تعبئة جميع بيانات الطلب العاجل.', 'error');
+        return;
+      }
+
+      const requests = getStorageData(STORAGE.urgent, []);
+      requests.push({
+        id: uid('urgent'),
+        bloodType,
+        city,
+        district,
+        location,
+        phone,
+        description,
+        createdAt: new Date().toISOString()
+      });
+      setStorageData(STORAGE.urgent, requests);
+
+      document.getElementById('urgent-form').reset();
+      alertBox('تم إرسال الطلب العاجل بنجاح.', 'success');
+      toast('تم إرسال الطلب العاجل');
+      showScreen('home');
+    }
+
+    function tryRemoteSync(action, payload, onSuccess, onError) {
+      if (!APP_CONFIG.enableRemoteSync || !APP_CONFIG.appsScriptUrl) {
+        if (onSuccess) onSuccess();
+        return;
+      }
+
+      const params = new URLSearchParams({ action, ...payload });
+      fetch(APP_CONFIG.appsScriptUrl, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: params.toString()
+      })
+      .then(res => {
+        if (res.ok || res.type === 'opaque') {
+          if (onSuccess) onSuccess();
+        } else {
+          if (onError) onError();
+        }
+      })
+      .catch(() => {
+        if (onError) onError();
+      });
+    }
+
+    function bindEvents() {
+      document.querySelectorAll('[data-auth-mode]').forEach(button => {
+        button.addEventListener('click', () => {
+          states.authMode = button.dataset.authMode;
+          updateAuthSwitch();
+        });
+      });
+
+      document.getElementById('login-form').addEventListener('submit', handleLogin);
+      document.getElementById('register-form').addEventListener('submit', handleRegister);
+      document.getElementById('donor-form').addEventListener('submit', handleDonorSubmit);
+      document.getElementById('urgent-form').addEventListener('submit', handleUrgentSubmit);
+
+      document.querySelectorAll('[data-screen]').forEach(card => {
+        card.addEventListener('click', () => {
+          const target = card.dataset.screen;
+          if (target === 'auth-screen') {
+            handleLogout();
+            return;
+          }
+          showScreen(target);
+          if (target === 'account-screen') renderAccountStats();
+        });
+      });
+
+      document.querySelectorAll('[data-back]').forEach(button => {
+        button.addEventListener('click', () => {
+          const target = button.dataset.back;
+          showScreen(target);
+          if (target === 'home-screen') renderWelcome();
+        });
+      });
+
+      document.querySelectorAll('#donor-blood-grid .blood-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          states.selectedBlood = btn.dataset.blood;
+          document.getElementById('donor-bloodtype').value = states.selectedBlood;
+          setBloodSelection('donor-blood-grid', states.selectedBlood);
+        });
+      });
+
+      document.querySelectorAll('#search-blood-grid .blood-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          states.selectedSearchBlood = btn.dataset.search;
+          setBloodSelection('search-blood-grid', states.selectedSearchBlood);
+          renderSearchResults(states.selectedSearchBlood);
+        });
+      });
+    }
+
+    function init() {
+      bindEvents();
+      updateAuthSwitch();
+      ensureSession();
+      renderSearchResults('');
+      renderAccountStats();
+      hideAlert();
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
